@@ -34,15 +34,18 @@ namespace Chat.Infrastructure.Services
         {
 
             var sender = await _userRepository.Get(u => u.Id == senderId);
+
             var receiver = await _userRepository.Get(u => u.Id == receiverId);
 
             if (!_userDomainService.IsOfferExist(sender, receiver)) throw new Exception("Offer already exist");
 
             var offer = sender.SendOfferToUser(receiver);
+
             receiver.ReceiveOffer(offer);
 
-             _db.Users.Update(sender);
-             _db.Users.Update(receiver);
+            _db.Users.Update(sender);
+
+            _db.Users.Update(receiver);
 
             var result = await _db.SaveChangesAsync();
 
@@ -54,16 +57,19 @@ namespace Chat.Infrastructure.Services
         public async Task CreateRelationAsync(string to, string from)
         {
             var friendUser =  await _userRepository.Get(f => f.Id == to);
+
             var currentUser =  await _userRepository.Get(f => f.Id == from);
 
             if (_userDomainService.IsRelationBetweenUserExist(currentUser, friendUser)) new Exception("Relations already exists");
 
             _userDomainService.AcceptOffer(friendUser, currentUser);
+
             var offer = _userDomainService.FindOfferBetweenUsers(currentUser, friendUser);
             
-
             _db.Users.Update(currentUser);
+
             _db.Users.Update(friendUser);
+
             _db.Offers.Remove(offer);
 
             var result = await _db.SaveChangesAsync();
@@ -72,12 +78,15 @@ namespace Chat.Infrastructure.Services
         public async Task<int> RemoveRelationAsync(DeclineRelationOptions options)
         {
             var currentUser = await _db.Users.Where(user => user.Id == options.CurrentUserId).SingleOrDefaultAsync();
+
             var user = await _db.Users.Where(user => user.Id == options.Id).SingleOrDefaultAsync();
 
             currentUser.RemoveUserRelation(user);
+
             user.RemoveUserRelation(currentUser);
 
             _db.Users.Update(currentUser);
+
             _db.Users.Update(user);
 
             await _db.SaveChangesAsync();
@@ -88,12 +97,15 @@ namespace Chat.Infrastructure.Services
         public async Task DeclineOfferAsync(string id)
         {
             var currentUser = await _userRepository.Get(user => user.Id == _workContext.GetUserId());
+
             var user = await _userRepository.Get(user => user.Id == id);
 
             var offer = _userDomainService.FindOfferBetweenUsers(currentUser, user);
 
             _db.Users.Update(currentUser);
+
             _db.Users.Update(user);
+
             _db.Offers.Remove(offer);
 
             await _db.SaveChangesAsync();
@@ -113,11 +125,13 @@ namespace Chat.Infrastructure.Services
         public async Task<bool> RemoveOfferAsync(string currentUserId, string userId)
         {
             var currentUser = await _userRepository.Get(user => user.Id == currentUserId);
+
             var user = await _userRepository.Get(user => user.Id == userId);
 
             var offer = _userDomainService.FindOfferBetweenUsers(currentUser, user);
 
             _db.Users.Update(currentUser);
+
             _db.Offers.Remove(offer);
 
             await _db.SaveChangesAsync();

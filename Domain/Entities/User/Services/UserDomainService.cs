@@ -37,6 +37,7 @@ namespace Chat.Domain.Entities.Services
             if (offer != null)
             {
                 participant.RemoveOffer(offer);
+
                 secondParticipant.RemoveOffer(offer);
             }
         }
@@ -44,6 +45,7 @@ namespace Chat.Domain.Entities.Services
         public Offer FindOfferBetweenUsers(User participant, User secondParticipant)
         {
             var offer = participant.Offers.Where(offer => (offer.SenderId == participant.Id && offer.ReceiverId == secondParticipant.Id) || (offer.SenderId == secondParticipant.Id && offer.ReceiverId == participant.Id)).SingleOrDefault();
+            
             return offer;
         }
 

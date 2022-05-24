@@ -31,12 +31,12 @@ namespace Chat.Infrastructure.Services
         public async Task<string> Authenticate(string name, string password)
         {
             var user = await _userManager.FindByNameAsync(name);
+
             var result = await _userManager.CheckPasswordAsync(user, password);
 
             if (!result) new AuthenticationException();
 
             var token = CreateJwt(user);
-
 
             return token;
         }
@@ -63,6 +63,7 @@ namespace Chat.Infrastructure.Services
         private string CreateJwt(ChatIdentityUser user)
         {
             var now = DateTime.UtcNow;
+
             var jwt = new JwtSecurityToken(
                     notBefore: now,
                     claims: GetClaims(user),

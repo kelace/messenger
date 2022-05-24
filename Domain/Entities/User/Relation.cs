@@ -23,5 +23,4 @@ namespace Chat.Domain.Entities
             Receiver = receiver;
         }
     }
-
 }

@@ -25,6 +25,7 @@ namespace Chat.Infrastructure.Services
         public async Task<Message> CreateMessageAsync(CreateMessageOptions options)
         {
             var userFrom = await _UserService.GetById(options.fromID);
+
             var userTo = await _UserService.GetById(options.toID);
 
             var IsRelate = await _relationService.IsRelateTo(userFrom.Id, userTo.Id);
@@ -37,6 +38,7 @@ namespace Chat.Infrastructure.Services
             var message = new Message() { from = userFrom, to = userTo, text = options.text };
 
             await _db.Messages.AddAsync(message);
+
             var result = await _db.SaveChangesAsync();
 
             if (result !=0)

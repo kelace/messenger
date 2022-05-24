@@ -46,7 +46,6 @@ namespace Chat.UI.Controllers
 
             var user = await _userService.GetByName(request.Name);
 
-
             if (user == null)
             {
                 return BadRequest("no such user registred");
@@ -55,6 +54,7 @@ namespace Chat.UI.Controllers
             string token = await _authenticationService.Authenticate(request.Name, request.Password);
 
             _workContext.SetUser(user);
+
             var accountVm = await _accountService.GetUserDetails(user.Id);
 
             accountVm.Token = token;
@@ -78,6 +78,7 @@ namespace Chat.UI.Controllers
             if (dialogId != null)
             {
                 var resultDialog = await _accountService.GetUserDetails(Id, dialogId);
+
                 return Ok(resultDialog);
             }
 
@@ -138,6 +139,7 @@ namespace Chat.UI.Controllers
         {
 
             var Id = User.Claims.First(f => f.Type == "userId").Value;
+
             var user = await _userService.GetById(Id);
 
             if (Id == null)
@@ -170,6 +172,7 @@ namespace Chat.UI.Controllers
         public IActionResult LogOut()
         {
             _authenticationService.SignOut();
+
             return Ok();
         }
 

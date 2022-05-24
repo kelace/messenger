@@ -70,8 +70,9 @@ namespace Chat.Domain.Entities
 
         public void RemoveOffer(Offer offer)
         {
-                SendedOffers.Remove(offer);
-                ReceivedOffers.Remove(offer);
+            SendedOffers.Remove(offer);
+
+            ReceivedOffers.Remove(offer);
         }
 
         public void AddRelation(Relation relation)
@@ -101,7 +102,9 @@ namespace Chat.Domain.Entities
                 if((relation.Sender.Id == Id && relation.Receiver.Id == user.Id) || (relation.Sender.Id == user.Id && relation.Receiver.Id == Id) )
                 {
                     SendedRelation.Remove(relation);
+
                     ReceivedRelations.Remove(relation);
+
                     return;
                 }
             }

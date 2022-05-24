@@ -23,7 +23,9 @@ namespace Chat.Infrastructure.Services
             if (currentUser != null) return currentUser;
 
             var Id = GetUserId();
+
             var user = await _db.Users.Where(u => u.Id == Id).SingleOrDefaultAsync();
+
             return user;
         }
 

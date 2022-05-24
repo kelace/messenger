@@ -39,14 +39,16 @@ namespace Chat.UI.Controllers
         public async Task<IActionResult> CreateRelation([FromBody] CreateRelationRequest request)
         {
             var from = User.Claims.First(f => f.Type == "userId").Value;
+
             var options = new CreateRelationOptions { to = request.toId, from = from };
-             await _relationServices.CreateRelationAsync(request.toId, from);
 
-                var user = await _userService.GetById(from);
+            await _relationServices.CreateRelationAsync(request.toId, from);
 
-                await _hubContext.Clients.User(request.toId).SendAsync("ReceiveOffer", new { Name = user.Name, Id = user.Id, status = "Sended", belonging = "Reciever" });
+            var user = await _userService.GetById(from);
+
+            await _hubContext.Clients.User(request.toId).SendAsync("ReceiveOffer", new { Name = user.Name, Id = user.Id, status = "Sended", belonging = "Reciever" });
                 
-                return Ok(new { status = "Relation has sended" });
+            return Ok(new { status = "Relation has sended" });
         }
 
         [HttpPost]
@@ -54,6 +56,7 @@ namespace Chat.UI.Controllers
         public async Task<IActionResult> CreateOffer(string Id)
         {
             var user = await _workContext.GetUser();
+
             var result = await _relationServices.CreateOfferAsync(user.Id, Id);
 
             await _hubContext.Clients.User(Id).SendAsync("ReceiveOffer", new InterlocutorVm { Name = user.Name, Id = user.Id, Status = OfferStatus.Sended, IsThisUserInitiatorOfRelation = true, Messages = new List<Message>() });
@@ -66,7 +69,9 @@ namespace Chat.UI.Controllers
         public async Task<IActionResult> Accept(string Id)
         {
             AcceptRelationOptions options = new AcceptRelationOptions() { Id = Id };
+
             string currentUserId = User.Claims.First(f => f.Type == "userId").Value;
+
             options.currentUserId = currentUserId;
 
              await _relationServices.CreateRelationAsync(Id, currentUserId);
@@ -76,7 +81,6 @@ namespace Chat.UI.Controllers
             await _hubContext.Clients.User(Id).SendAsync("AcceptOffer", new InterlocutorVm { Name = user.Name, Id = user.Id, Status = OfferStatus.Accepted, IsThisUserInitiatorOfRelation = true});
             
             return Ok();
-
         }
 
         [HttpPost]
@@ -93,6 +97,7 @@ namespace Chat.UI.Controllers
         public async Task<IActionResult> RemoveOffer(string Id)
         {
             string currentUserId = User.Claims.First(f => f.Type == "userId").Value;
+
             var result = await _relationServices.RemoveOfferAsync(currentUserId, Id);
 
             if (result)

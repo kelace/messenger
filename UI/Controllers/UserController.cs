@@ -32,6 +32,7 @@ namespace Chat.UI.Controllers
         public async Task<IActionResult> SearchUser(string letter)
         {
             var Id = GetUserId();
+
             var users = await _userService.SearchUserAsync(letter, Id);
 
             return Ok(users);

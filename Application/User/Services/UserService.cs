@@ -43,6 +43,7 @@ namespace Chat.Infrastructure.Services
             foreach (var user in users)
             {
                 var userModel = await _interlocutorModelFactory.Form(user);
+
                 usersModel.Add(userModel);
             }
 
@@ -67,6 +68,7 @@ namespace Chat.Infrastructure.Services
             var user = await _db.Users.Where(u => u.Name == name).FirstOrDefaultAsync();
 
             if (user != null) return true;
+
             return false;
         }
 

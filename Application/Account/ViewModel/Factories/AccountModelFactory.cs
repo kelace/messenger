@@ -28,9 +28,11 @@ namespace Chat.Application.Factories
         private async Task<AccountVm> _Form(User user)
         {
             var itnerlocutors = user.Relations;
+
             var itnerlocutorsOffer = user.Offers.FindAll(r => r.ReceiverId == user.Id && r.SenderId != user.Id);
 
             var userList = new List<InterlocutorVm>();
+
             var accountModel = new AccountVm();
 
             for (int i = 0; i < itnerlocutors.Count; i++)

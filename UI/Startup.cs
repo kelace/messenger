@@ -57,7 +57,9 @@ namespace Chat.UI
                     options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
                 }
             );
+
             services.AddHttpContextAccessor();
+
             services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
 
             services.AddIdentity<ChatIdentityUser, IdentityRole>(options =>
@@ -105,7 +107,6 @@ namespace Chat.UI
                 };
             });
 
-
             services.ConfigureChatServices();
             services.AddSignalR()
                 .AddJsonProtocol(options =>
@@ -122,18 +123,18 @@ namespace Chat.UI
             app.UseExceptionHandler(
                   options =>
                   {
-                      options.Run(
-                          async context =>
-                          {
-                              context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                              context.Response.ContentType = "application/json";
-                              var exceptionObject = context.Features.Get<IExceptionHandlerFeature>();
-                              if (null != exceptionObject)
-                              {
-                                  var errorMessage = $"<b>Exception Error: {exceptionObject.Error.Message} </b> {exceptionObject.Error.StackTrace}";
-                                  await context.Response.WriteAsync(errorMessage).ConfigureAwait(false);
-                              }
-                          });
+                    options.Run(
+                        async context =>
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                            context.Response.ContentType = "application/json";
+                            var exceptionObject = context.Features.Get<IExceptionHandlerFeature>();
+                            if (null != exceptionObject)
+                            {
+                                var errorMessage = $"<b>Exception Error: {exceptionObject.Error.Message} </b> {exceptionObject.Error.StackTrace}";
+                                await context.Response.WriteAsync(errorMessage).ConfigureAwait(false);
+                            }
+                        });
                   }
               );
 
