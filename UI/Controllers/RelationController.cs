@@ -74,7 +74,7 @@ namespace Chat.UI.Controllers
 
             options.currentUserId = currentUserId;
 
-             await _relationServices.CreateRelationAsync(Id, currentUserId);
+            await _relationServices.CreateRelationAsync(Id, currentUserId);
 
             var user = await _userService.GetById(currentUserId);
 

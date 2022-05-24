@@ -20,7 +20,6 @@ namespace Chat.UI.Controllers
     [Authorize]
     public class UserController : ChatControllerBase
     {
-
         IUserService _userService;
         public UserController(IUserService userService)
         {

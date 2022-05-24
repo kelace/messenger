@@ -12,6 +12,5 @@ namespace Chat.UI.Controllers
         {
             return User.Claims.First(f => f.Type == "userId").Value;
         }
-
     }
 }

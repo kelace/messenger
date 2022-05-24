@@ -138,6 +138,5 @@ namespace Chat.Infrastructure.Services
 
             return true;
         }
-
     }
 }

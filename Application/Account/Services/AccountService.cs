@@ -16,7 +16,6 @@ namespace Chat.Application.Services
 {
     public class AccountService : IAccountService
     {
-
         IAccountModelFactory _accountModelFactory;
         IUserService _userService;
         IAuthenticationChatService _authenticationService;
@@ -81,6 +80,5 @@ namespace Chat.Application.Services
             if (result == 0) return false;
             return true;
         }
-
     }
 }
