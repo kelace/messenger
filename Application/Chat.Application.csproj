@@ -13,8 +13,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.24" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Message\DTOs\" />
-  </ItemGroup>
-
 </Project>

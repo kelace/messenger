@@ -207,7 +207,7 @@ export default {
 }
 
 .messanger-holder {
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .messanger-box {

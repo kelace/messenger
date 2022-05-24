@@ -175,6 +175,5 @@ namespace Chat.UI.Controllers
 
             return Ok();
         }
-
     }
 }
